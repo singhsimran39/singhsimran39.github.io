@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Coding a Neural Network from scratch</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>2017-09-01-Softmax</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -8451,15 +8451,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box
+/* This file is a compatability layer.  It allows the usage of flexible box 
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this
+`Modern browsers` comments below).  Browsers that are known to implement this 
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+
+    Internet Explorer 11+ 
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -11233,7 +11233,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for
+  /* This injects handle bars (a short, wide = symbol) for 
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -11676,7 +11676,7 @@ ul.typeahead-list > li > a {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
 <style type="text/css">
-
+    
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
 .ansi-black-fg { color: #3E424D; }
 .ansi-black-bg { background-color: #3E424D; }
@@ -11732,14 +11732,14 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  }
-  div.output_wrapper {
+  } 
+  div.output_wrapper { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
-  div.output {
+  div.output { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
 }
 </style>
@@ -11778,213 +11778,304 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Import-required-libraries">Import required libraries<a class="anchor-link" href="#Import-required-libraries">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span>
-</pre></div>
+<h1 id="Softmax-Function">Softmax Function<a class="anchor-link" href="#Softmax-Function">&#182;</a></h1><p>The Softmax function is a generalization of the Logistic Function. Where the Logistic function is mostly used in binary classification problems the Softmax function is used for multi class classification problems. The Softmax Function squashes a vector <em>Z</em> $\in{R^{n}}$ to produce values in the range [0, 1]. The output of the softmax is normalized and the values can be interpreted as class probabilities. The form of the softmax is:</p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Read-data-into-a-dataframe">Read data into a dataframe<a class="anchor-link" href="#Read-data-into-a-dataframe">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">read_mnist_to_df</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">is_label</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mnist_file</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">is_label</span><span class="p">:</span>
-            <span class="n">magic_nr</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;II&quot;</span><span class="p">,</span> <span class="n">mnist_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mnist_file</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-            <span class="n">pd_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;digit&#39;</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">magic_nr</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;&gt;IIII&quot;</span><span class="p">,</span> <span class="n">mnist_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mnist_file</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">size</span><span class="p">,</span> <span class="n">rows</span><span class="o">*</span><span class="n">cols</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mf">256.</span>
-            <span class="n">pd_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="o">*</span><span class="n">cols</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="n">pd_data</span>
-</pre></div>
+\begin{equation}
+    \hat{y}_{i} = \frac{\mathrm{e}^{z_{i}}}{\sum\limits_{j=1}^{C}   \mathrm{e}^{z_j}}
+\end{equation}<p>Where $C$ is the number of different classes.</p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Create-train-and-test-data">Create train and test data<a class="anchor-link" href="#Create-train-and-test-data">&#182;</a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_pixels</span> <span class="o">=</span> <span class="n">read_mnist_to_df</span><span class="p">(</span><span class="s1">&#39;train-images-idx3-ubyte&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">train_labels</span> <span class="o">=</span> <span class="n">read_mnist_to_df</span><span class="p">(</span><span class="s1">&#39;train-labels-idx1-ubyte&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">test_pixels</span> <span class="o">=</span> <span class="n">read_mnist_to_df</span><span class="p">(</span><span class="s1">&#39;t10k-images-idx3-ubyte&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-<span class="n">test_labels</span> <span class="o">=</span> <span class="n">read_mnist_to_df</span><span class="p">(</span><span class="s1">&#39;t10k-labels-idx1-ubyte&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-</pre></div>
+<h1 id="Derivative-of-Softmax-Function">Derivative of Softmax Function<a class="anchor-link" href="#Derivative-of-Softmax-Function">&#182;</a></h1><p>If the softmax function is used in a neural network then its derivative is used for backpropagating the errors to the hidden layers. The derivative is calculated in 2 different cases when $i=j$ and when $i\ne{j}$. The softmax can be written as:</p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Weight-initialization-for-hidden-layer-with-100-neurons">Weight initialization for hidden layer with 100 neurons<a class="anchor-link" href="#Weight-initialization-for-hidden-layer-with-100-neurons">&#182;</a></h3>
+\begin{equation}
+\hat{y}_{i} = \frac{\mathrm{e}^{z_{i}}} {\mathrm{e}^{z_{1}} + \mathrm{e}^{z_{2}} +...+ \mathrm{e}^{z_{i}} + ... +  \mathrm{e}^{z_{C}}}
+\end{equation}
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">input_layer</span> <span class="o">=</span> <span class="n">train_pixels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">hidden_neurons</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">num_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">train_labels</span><span class="o">.</span><span class="n">digit</span><span class="p">))</span>
-<span class="n">learn_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
-
-<span class="n">W1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">hidden_neurons</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span><span class="o">/</span><span class="n">input_layer</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">hidden_neurons</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">W2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">hidden_neurons</span><span class="p">)</span>
-<span class="n">b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-<span class="n">xtrain</span> <span class="o">=</span> <span class="n">train_pixels</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
-<span class="n">xtrain</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">train_pixels</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ytrain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">train_labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ytrain</span><span class="p">)):</span>
-    <span class="n">ytrain</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">train_labels</span><span class="o">.</span><span class="n">digit</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="n">ytrain</span> <span class="o">=</span> <span class="n">ytrain</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
-
-<span class="n">xtest</span> <span class="o">=</span> <span class="n">test_pixels</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
-<span class="n">xtest</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">test_pixels</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ytest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">test_labels</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ytest</span><span class="p">)):</span>
-    <span class="n">ytest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">test_labels</span><span class="o">.</span><span class="n">digit</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-
-<span class="n">ytest</span> <span class="o">=</span> <span class="n">ytest</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Train-the-network-and-predict-on-test-data">Train the network and predict on test data<a class="anchor-link" href="#Train-the-network-and-predict-on-test-data">&#182;</a></h3>
+<p>When $i=j$ (using the Quotient Rule), differentiating and rearranging the sofxtmax equation gives us:</p>
+
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">epochTrainLoss</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">epochTestLoss</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">trainActual</span> <span class="o">=</span> <span class="n">train_labels</span><span class="o">.</span><span class="n">digit</span><span class="o">.</span><span class="n">values</span>
-<span class="n">testActual</span> <span class="o">=</span> <span class="n">test_labels</span><span class="o">.</span><span class="n">digit</span><span class="o">.</span><span class="n">values</span>
-<span class="n">regLambda</span> <span class="o">=</span> <span class="o">.</span><span class="mi">01</span>
-
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">):</span>
-
-    <span class="n">totalTrainLoss</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">delta2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">hidden_neurons</span><span class="p">))</span>
-    <span class="n">delta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">hidden_neurons</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-        <span class="c1">#Forward Pass</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">xtrain</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">hidden_layer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">b1</span><span class="p">))</span>
-        <span class="n">output_layer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">,</span> <span class="n">hidden_layer</span><span class="p">),</span> <span class="n">b2</span><span class="p">)</span>
-        <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">output_layer</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">output_layer</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="c1">#Loss</span>
-        <span class="n">Y</span> <span class="o">=</span> <span class="n">ytrain</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">trainLoss</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">pred</span><span class="p">)))</span>
-
-        <span class="c1">#Backward Pass</span>
-        <span class="n">dEdW2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">pred</span> <span class="o">-</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">hidden_layer</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-        <span class="n">temp1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">pred</span> <span class="o">-</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-        <span class="n">temp1</span><span class="p">[</span><span class="n">temp1</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">dEdW1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">temp1</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-
-        <span class="n">totalTrainLoss</span> <span class="o">+=</span> <span class="n">trainLoss</span>
-        <span class="n">delta2</span> <span class="o">+=</span> <span class="n">dEdW2</span> <span class="o">+</span> <span class="p">(</span><span class="n">regLambda</span> <span class="o">*</span> <span class="n">W2</span><span class="p">)</span>
-        <span class="n">delta1</span> <span class="o">+=</span> <span class="n">dEdW1</span> <span class="o">+</span> <span class="p">(</span><span class="n">regLambda</span> <span class="o">*</span> <span class="n">W1</span><span class="p">)</span>
-
-    <span class="c1">#Weight update</span>
-    <span class="n">W2</span> <span class="o">+=</span> <span class="n">learn_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">delta2</span> <span class="o">/</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">W1</span> <span class="o">+=</span> <span class="n">learn_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">delta1</span> <span class="o">/</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="n">hlTrain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">b1</span><span class="p">))</span>
-    <span class="n">olTrain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">,</span> <span class="n">hlTrain</span><span class="p">),</span> <span class="n">b2</span><span class="p">)</span>
-    <span class="n">finalTrain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">olTrain</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">olTrain</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">trainPreds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">finalTrain</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">trainAcc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">trainPreds</span> <span class="o">==</span> <span class="n">trainActual</span><span class="p">)</span>
-    <span class="n">trainAcc</span> <span class="o">=</span> <span class="p">(</span><span class="n">trainAcc</span> <span class="o">/</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
-
-    <span class="n">hlTest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">xtest</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">b1</span><span class="p">))</span>
-    <span class="n">olTest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">W2</span><span class="p">,</span> <span class="n">hlTest</span><span class="p">),</span> <span class="n">b2</span><span class="p">)</span>
-    <span class="n">finalTest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">olTest</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">olTest</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">testPreds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">finalTest</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">testAcc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">testPreds</span> <span class="o">==</span> <span class="n">testActual</span><span class="p">)</span>
-    <span class="n">testAcc</span> <span class="o">=</span> <span class="p">(</span><span class="n">testAcc</span> <span class="o">/</span> <span class="n">xtest</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
-
-    <span class="n">totalTestLoss</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">ytest</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">finalTest</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="o">/</span> <span class="n">xtest</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">epochTestLoss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">totalTestLoss</span><span class="p">)</span>
-    <span class="n">epochTrainLoss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">totalTrainLoss</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch -&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train Loss:&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">totalTrainLoss</span> <span class="o">/</span> <span class="n">xtrain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="s1">&#39;, Train Accuracy:&#39;</span><span class="p">,</span> <span class="n">trainAcc</span><span class="p">,</span>
-          <span class="s1">&#39;, Test Loss:&#39;</span><span class="p">,</span> <span class="n">totalTestLoss</span><span class="p">,</span> <span class="s1">&#39;, Test Accuracy:&#39;</span><span class="p">,</span> <span class="n">testAcc</span><span class="p">)</span>
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = \frac{\mathrm{e}^{z_{i}}}{\sum_{C}} 
+    \frac{\sum_{C} -\mathrm{e}^{z_{j}}}{\sum_{C}}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = \hat{y}_{i} (1 - \hat{y}_{i})
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When $i \ne{j}$ (using the Quotient Rule):</p>
 
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = \frac{0 - \mathrm{e}^{z_{i}} \mathrm{e}^{z_{j}}}{{\sum_{C}}^2}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = - \hat{y}_{i} \hat{y}_{j}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Cross-Entropy-Loss-Function">Cross Entropy Loss Function<a class="anchor-link" href="#Cross-Entropy-Loss-Function">&#182;</a></h1><p>The softmax classifier generally uses the Cross Entropy Loss function which is of the form:</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    E = - \sum\limits_{j=1}^{C} t_{j}\log{\hat{y}_{j}}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When the output vector for the multi class classification is one hot encoded the $t_{j}$ is 1 for only the actual class that the example belongs to and zero at all other places. This reduces the form of the Cross Entropy Loss function to:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    E = - t_{j} \log{\hat{y}_{j}}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>where $t_{j}$ and $\hat{y}_{j}$ are 1 and predicted probability by the classifier.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Backpropagating-the-Loss-to-the-last-hidden-layer-of-the-neural-network">Backpropagating the Loss to the last hidden layer of the neural network<a class="anchor-link" href="#Backpropagating-the-Loss-to-the-last-hidden-layer-of-the-neural-network">&#182;</a></h3><p>The $\hat{y}_{j}$ in the loss function comes from the softmax equation, which is a function of the $z$ therefore to backpropagate the error we must differentiate $E$ w.r.t. the values coming into the putput latyer and multiply that derivative with the derivative of the output which is 1. Using the chain rule to backpropagate the error we have:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{\partial{E}}{\partial{\hat{y}_{j}}} \frac{\partial{\hat{y}_{j}}}{\partial{z_{i}}}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{t_{j}}{\hat{y}_{j}} \frac{\partial{\hat{y}_{j}}}{\partial{z_{i}}}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We already have calculated the second part ($\frac{\partial{\hat{y}_{j}}}{\partial{z}_{i}}$) of the above equation in the previous section, thus substituting the values for when $i = j$ and $i\ne{j}$ we get:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - \frac{t_{j}}{\hat{y}_{j}} \hat{y}_{i}(1 - \hat{y}_{i}) - \sum\limits_{j=1, j\ne{i}}^{C} \frac{t_{j}}{\hat{y}_{j}} (-\hat{y}_{j}\hat{y}_{i})
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j}(1 - \hat{y}_{i}) + \sum\limits_{j\ne{i}} t_{j}\hat{y}_{i}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + t_{j}\hat{y}_{i} + \sum\limits_{j\ne{i}} t_{j}\hat{y}_{i}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \sum\limits_{j=1}^{C} t_{j}\hat{y}_{i}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>since $\hat{y}_{i}$ is constant</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \hat{y}_{i} \sum\limits_{j=1}^{C} t_{j}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>since for one hot encoding the sum of the vector t is equal to, we have:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+\begin{equation}
+    \frac{\partial{E}}{\partial{z_{i}}} = \hat{y}_{i} - t_{j}
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above result can then be multiplied with the derivative of the hidden layer and backpropagated further down in the network.</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>
 </body>
 
-
+ 
 
 
 </html>
