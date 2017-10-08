@@ -1,16 +1,32 @@
-{% include header.html %}
+---
+---
+<!DOCTYPE html>
+<html>
 
-<div class="wrap">
-    <div class="container container-left">
-        <div class="row">
-            <div class="col-md-3 hidden-xs">
-                {% include sidebar.html %}
-            </div>
-            <div class="col-md-9">
-                {{ content }}
-            </div>
-        </div>
-    </div>
+{% include head.html %}
 
-    {% include footer.html %}
-</div>
+  <body>
+
+        {% include sidebar.html %}
+        <div class="menu-icon"></div>
+      <div class="contents">
+        {% include header.html %}
+
+      <div class="page-content">
+          <div class="wrapper">
+            {{ content }}
+          </div>
+      </div>
+
+{% include footer.html %}
+      </div>
+
+{% include 3d-menu.html %}
+
+
+{% if site.analytics %}
+ {% include analytics.html %}
+{% endif %}
+
+</body>
+</html>
