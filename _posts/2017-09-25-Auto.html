@@ -2,6 +2,7 @@
 layout: page
 title: Train + Validate + Build + Deploy a Machine Learning model
 ---
+
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
@@ -12119,18 +12120,14 @@ div#notebook {
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}</p>
-<p>{% block title %}
+</div>{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
 Tensorflow WebApp
-{% endblock %}</p>
-<p>{% block content%}</p>
+{% endblock %}
+
+{% block content%}
 <div class="texts" style="float:left;width: 30%;margin-left: 2cm">
     <h3>Tensorflow based Neural Network</h3>
     <form action="{{ url_for('index') }}" method="post">
@@ -12152,11 +12149,9 @@ Tensorflow WebApp
 <div class="table" style="float:right;width: 30%;margin-right: 2cm">
     <h3>Tested on below data:</h3>
         {{data | safe}}
-</div><p>{% endblock %}</p>
+</div>
 
-</div>
-</div>
-</div>
+{% endblock %}
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
