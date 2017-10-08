@@ -10,7 +10,7 @@ title: Simran Singh
 email: singhsimran39@yahoo.com
 description: > # this means to ignore newlines until "baseurl:"
   Gatok is a minimal jekyll theme with a 3d menu bar.
-baseurl: "https://singhsimran39.github.io/" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 #url: "http://webjeda.com" # the base hostname & protocol for your site
 
 
