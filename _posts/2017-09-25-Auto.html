@@ -1,8 +1,3 @@
----
-layout: page
-title: Train + Validate + Build + Deploy a Machine Learning model
----
-
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
@@ -8456,15 +8451,15 @@ label {
 }
 /* Flexible box model classes */
 /* Taken from Alex Russell http://infrequently.org/2009/08/css-3-progress/ */
-/* This file is a compatability layer.  It allows the usage of flexible box
+/* This file is a compatability layer.  It allows the usage of flexible box 
 model layouts accross multiple browsers, including older browsers.  The newest,
 universal implementation of the flexible box model is used when available (see
-`Modern browsers` comments below).  Browsers that are known to implement this
+`Modern browsers` comments below).  Browsers that are known to implement this 
 new spec completely include:
 
     Firefox 28.0+
     Chrome 29.0+
-    Internet Explorer 11+
+    Internet Explorer 11+ 
     Opera 17.0+
 
 Browsers not listed, including Safari, are supported via the styling under the
@@ -11238,7 +11233,7 @@ div#pager .ui-resizable-handle {
   background: #f7f7f7;
   border-top: 1px solid #cfcfcf;
   border-bottom: 1px solid #cfcfcf;
-  /* This injects handle bars (a short, wide = symbol) for
+  /* This injects handle bars (a short, wide = symbol) for 
         the resize handle. */
 }
 div#pager .ui-resizable-handle::after {
@@ -11681,7 +11676,7 @@ ul.typeahead-list > li > a {
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
 <style type="text/css">
-
+    
 /* Temporary definitions which will become obsolete with Notebook release 5.0 */
 .ansi-black-fg { color: #3E424D; }
 .ansi-black-bg { background-color: #3E424D; }
@@ -11737,14 +11732,14 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  }
-  div.output_wrapper {
+  } 
+  div.output_wrapper { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
-  div.output {
+  div.output { 
     display: block;
-    page-break-inside: avoid;
+    page-break-inside: avoid; 
   }
 }
 </style>
@@ -11938,8 +11933,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Save the model</strong></p>
-
+<h3 id="Save-the-model">Save the model<a class="anchor-link" href="#Save-the-model">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -12041,8 +12035,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Other files:</strong></p>
-<p>model.py</p>
+<h3 id="Restore-the-saved-model">Restore the saved model<a class="anchor-link" href="#Restore-the-saved-model">&#182;</a></h3><p><strong>model.py</strong></p>
 
 </div>
 </div>
@@ -12116,48 +12109,18 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>index.html</p>
+<p><strong>index.html</strong></p>
+<p><img src="/assets/images/index.png" alt=""></p>
 
 </div>
 </div>
-</div>{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block title %}
-Tensorflow WebApp
-{% endblock %}
-
-{% block content%}
-<div class="texts" style="float:left;width: 30%;margin-left: 2cm">
-    <h3>Tensorflow based Neural Network</h3>
-    <form action="{{ url_for('index') }}" method="post">
-        <dl>
-            {{ form.csrf_token }}
-            {{ wtf.form_field(form.horsepower) }}
-            {{ wtf.form_field(form.weight) }}
-            {{ wtf.form_field(form.cylinders) }}
-            {{ wtf.form_field(form.origin) }}
-            {{ wtf.form_field(form.year) }}
-            <input class="btn btn-primary" type="submit" value="Predict">
-        </dl>
-        <h3>Predicted Miles per Gallon is (RMSE:8.49)</h3>
-        {% if total != None %}
-        <b><div class="alert alert-success" role="alert">{{ total }}</div></b>
-        {% endif %}
-    </form>
 </div>
-<div class="table" style="float:right;width: 30%;margin-right: 2cm">
-    <h3>Tested on below data:</h3>
-        {{data | safe}}
-</div>
-
-{% endblock %}
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Heroku">Heroku<a class="anchor-link" href="#Heroku">&#182;</a></h3>
+<h3 id="Deploy-the-App-using-Heroku">Deploy the App using Heroku<a class="anchor-link" href="#Deploy-the-App-using-Heroku">&#182;</a></h3>
 </div>
 </div>
 </div>
@@ -12176,9 +12139,9 @@ Tensorflow WebApp
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$ cd auto/
-$ git init
-$ heroku git:remote -a auto-predict</p>
+<p>$ cd auto/</p>
+<p>$ git init</p>
+<p>$ heroku git:remote -a auto-predict</p>
 
 </div>
 </div>
@@ -12188,9 +12151,9 @@ $ heroku git:remote -a auto-predict</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$ git add .
-$ git commit -m "commit message"
-$ git push heroku master</p>
+<p>$ git add .</p>
+<p>$ git commit -m "commit message"</p>
+<p>$ git push heroku master</p>
 
 </div>
 </div>
@@ -12205,11 +12168,24 @@ $ git push heroku master</p>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
     </div>
   </div>
 </body>
 
-
+ 
 
 
 </html>
