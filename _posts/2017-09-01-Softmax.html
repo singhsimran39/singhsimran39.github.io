@@ -11793,7 +11793,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \hat{y}_{i} = \frac{\mathrm{e}^{z_{i}}}{\sum\limits_{j=1}^{C}   \mathrm{e}^{z_j}}
+    \hat{y_{i}} = \frac{\mathrm{e}^{z_{i}}}{\sum\limits_{j=1}^{C}   \mathrm{e}^{z_j}}
 \end{equation}<p>Where $C$ is the number of different classes.</p>
 
 </div>
@@ -11815,7 +11815,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-\hat{y}_{i} = \frac{\mathrm{e}^{z_{i}}} {\mathrm{e}^{z_{1}} + \mathrm{e}^{z_{2}} +...+ \mathrm{e}^{z_{i}} + ... +  \mathrm{e}^{z_{C}}}
+\hat{y_{i}} = \frac{\mathrm{e}^{z_{i}}} {\mathrm{e}^{z_{1}} + \mathrm{e}^{z_{2}} +...+ \mathrm{e}^{z_{i}} + ... +  \mathrm{e}^{z_{C}}}
 \end{equation}
 </div>
 </div>
@@ -11836,7 +11836,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = \frac{\mathrm{e}^{z_{i}}}{\sum_{C}}
+    \frac{\partial{\hat{y_{i}}}}{\partial{z_{j}}} = \frac{\mathrm{e}^{z_{i}}}{\sum_{C}}
     \frac{\sum_{C} -\mathrm{e}^{z_{j}}}{\sum_{C}}
 \end{equation}
 </div>
@@ -11848,7 +11848,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = \hat{y}_{i} (1 - \hat{y}_{i})
+    \frac{\partial{\hat{y_{i}}}}{\partial{z_{j}}} = \hat{y_{i}} (1 - \hat{y}_{i})
 \end{equation}
 </div>
 </div>
@@ -11880,7 +11880,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{\hat{y}_{i}}}{\partial{z_{j}}} = - \hat{y}_{i} \hat{y}_{j}
+    \frac{\partial{\hat{y_{i}}}}{\partial{z_{j}}} = - \hat{y_{i}} \hat{y_{j}}
 \end{equation}
 </div>
 </div>
@@ -11901,7 +11901,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    E = - \sum\limits_{j=1}^{C} t_{j}\log{\hat{y}_{j}}
+    E = - \sum\limits_{j=1}^{C} t_{j}\log{\hat{y_{j}}}
 \end{equation}
 </div>
 </div>
@@ -11922,7 +11922,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    E = - t_{j} \log{\hat{y}_{j}}
+    E = - t_{j} \log{\hat{y_{j}}}
 \end{equation}
 </div>
 </div>
@@ -11953,7 +11953,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{\partial{E}}{\partial{\hat{y}_{j}}} \frac{\partial{\hat{y}_{j}}}{\partial{z_{i}}}
+    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{\partial{E}}{\partial{\hat{y_{j}}}} \frac{\partial{\hat{y_{j}}}}{\partial{z_{i}}}
 \end{equation}
 </div>
 </div>
@@ -11964,7 +11964,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{t_{j}}{\hat{y}_{j}} \frac{\partial{\hat{y}_{j}}}{\partial{z_{i}}}
+    \frac{\partial{E}}{\partial{z_{i}}} = - \sum\limits_{j=1}^{C} \frac{t_{j}}{\hat{y_{j}}} \frac{\partial{\hat{y_{j}}}}{\partial{z_{i}}}
 \end{equation}
 </div>
 </div>
@@ -11974,7 +11974,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We already have calculated the second part ($\frac{\partial{\hat{y}_{j}}}{\partial{z}_{i}}$) of the above equation in the previous section, thus substituting the values for when $i = j$ and $i\ne{j}$ we get:</p>
+<p>We already have calculated the second part ($\frac{\partial{\hat{y_{j}}}}{\partial{z}_{i}}$) of the above equation in the previous section, thus substituting the values for when $i = j$ and $i\ne{j}$ we get:</p>
 
 </div>
 </div>
@@ -11985,7 +11985,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - \frac{t_{j}}{\hat{y}_{j}} \hat{y}_{i}(1 - \hat{y}_{i}) - \sum\limits_{j=1, j\ne{i}}^{C} \frac{t_{j}}{\hat{y}_{j}} (-\hat{y}_{j}\hat{y}_{i})
+    \frac{\partial{E}}{\partial{z_{i}}} = - \frac{t_{j}}{\hat{y_{j}}} \hat{y_{i}}(1 - \hat{y_{i}}) - \sum\limits_{j=1, j\ne{i}}^{C} \frac{t_{j}}{\hat{y_{j}}} (-\hat{y_{j}}\hat{y_{i}})
 \end{equation}
 </div>
 </div>
@@ -11996,7 +11996,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j}(1 - \hat{y}_{i}) + \sum\limits_{j\ne{i}} t_{j}\hat{y}_{i}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j}(1 - \hat{y_{i}}) + \sum\limits_{j\ne{i}} t_{j}\hat{y_{i}}
 \end{equation}
 </div>
 </div>
@@ -12007,7 +12007,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + t_{j}\hat{y}_{i} + \sum\limits_{j\ne{i}} t_{j}\hat{y}_{i}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + t_{j}\hat{y_{i}} + \sum\limits_{j\ne{i}} t_{j}\hat{y_{i}}
 \end{equation}
 </div>
 </div>
@@ -12018,7 +12018,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \sum\limits_{j=1}^{C} t_{j}\hat{y}_{i}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \sum\limits_{j=1}^{C} t_{j}\hat{y_{i}}
 \end{equation}
 </div>
 </div>
@@ -12028,7 +12028,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>since $\hat{y}_{i}$ is constant</p>
+<p>since $\hat{y_{i}}$ is constant</p>
 
 </div>
 </div>
@@ -12039,7 +12039,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \hat{y}_{i} \sum\limits_{j=1}^{C} t_{j}
+    \frac{\partial{E}}{\partial{z_{i}}} = - t_{j} + \hat{y_{i}} \sum\limits_{j=1}^{C} t_{j}
 \end{equation}
 </div>
 </div>
@@ -12060,7 +12060,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 \begin{equation}
-    \frac{\partial{E}}{\partial{z_{i}}} = \hat{y}_{i} - t_{j}
+    \frac{\partial{E}}{\partial{z_{i}}} = \hat{y_{i}} - t_{j}
 \end{equation}
 </div>
 </div>
