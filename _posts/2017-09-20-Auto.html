@@ -11822,6 +11822,17 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Data preparation i.e. mean centering and normalization</strong></p>
+<p>Taking only cylinders, horsepowerm weight, year and origin as features to predict miles per gallon</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
@@ -11937,7 +11948,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Save-the-model">Save the model<a class="anchor-link" href="#Save-the-model">&#182;</a></h3>
+<h3 id="Save-the-model">Save the model<a class="anchor-link" href="#Save-the-model">&#182;</a></h3><p>Save the model in the same session and give it a name to resotre it later</p>
+
 </div>
 </div>
 </div>
@@ -11978,7 +11990,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Build-a-Flask-WebApp">Build a Flask WebApp<a class="anchor-link" href="#Build-a-Flask-WebApp">&#182;</a></h3><p>The main file of the app</p>
+<h3 id="Build-a-Flask-WebApp">Build a Flask WebApp<a class="anchor-link" href="#Build-a-Flask-WebApp">&#182;</a></h3><p>The main file of the app.
+The main page shows two text boxes to enter the horsepower and weight values and three dropdowns to select the year, cylinders and origin. After this in the if condition of the index method the predict method of the model file is called which takes in the new data and gives the prediction.</p>
 
 </div>
 </div>
@@ -12040,6 +12053,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Restore-the-saved-model">Restore the saved model<a class="anchor-link" href="#Restore-the-saved-model">&#182;</a></h3><p><strong>model.py</strong></p>
+<p>The saved model is restored in this file and the input data is centered and normalized using the values from the test data used in model training.</p>
 
 </div>
 </div>
@@ -12133,6 +12147,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Login to your Heroku account</strong></p>
 <p>$ heroku login</p>
 
 </div>
@@ -12143,8 +12158,11 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>change directory to the project directory</strong></p>
 <p>$ cd auto/</p>
+<p><strong>Initialize it as a git repository</strong></p>
 <p>$ git init</p>
+<p><strong>Create Heroku as the remote</strong></p>
 <p>$ heroku git:remote -a auto-predict</p>
 
 </div>
@@ -12155,35 +12173,13 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Commit changes and push to the remote</strong></p>
 <p>$ git add .</p>
 <p>$ git commit -m "commit message"</p>
 <p>$ git push heroku master</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>$ heroku git:remote -a auto-predict</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
