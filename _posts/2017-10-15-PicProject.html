@@ -2,11 +2,10 @@
 layout: page
 title: How a CNN learned to recognize my Face
 ---
-
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>2017-10-11-PicProject</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>PicProject</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 <style type="text/css">
@@ -11792,7 +11791,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>In this post I built a convlutional neural network and trained it on images of faces of 2 people and then used it predict the person based on unseen images. The process that I followed was:-</p>
+<p>In this post I built a convolutional neural network and trained it on images of faces of 2 people and then used it predict the person based on unseen images. The process that I followed was:-</p>
 <ul>
 <li>I took a 1000 images each of myself and a friend of mine </li>
 <li>Divided the dataset into train and test set</li>
@@ -11800,7 +11799,7 @@ div#notebook {
 <li>Fed new images to check the prediction probability </li>
 <li>Visualised the activation of the hidden layers.</li>
 </ul>
-<p>Rather than writing the code in a sequential manner I wrote the <a href="https://github.com/singhsimran39/PicProject.git">code</a> in a more object oriented way with classes and methods. In the next few sections I descrbe the important parts of the whole process.</p>
+<p>Rather than writing the code in a sequential manner I wrote the <a href="https://github.com/singhsimran39/PicProject.git">code</a> in a more object oriented way with classes and methods. In the next few sections I describe the important parts of the whole process.</p>
 
 </div>
 </div>
@@ -11962,7 +11961,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The cnn_network() method builds the network by calling the conv_layer() method. After the convolution layer are created the second convolution layer is flattened and then 2 fully connected layers are created along with the respective weights and biases. The last layer uses the softmax function so that the final values ca nbe interpreted as probabilities.</p>
+<p>The cnn_network() method builds the network by calling the conv_layer() method. After the convolution layer are created the second convolution layer is flattened and then 2 fully connected layers are created along with the respective weights and biases. The last layer uses the softmax function so that the final values can be interpreted as probabilities.</p>
 
 </div>
 </div>
@@ -12006,8 +12005,8 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The train() method is the meat of the whole code. In here the get_images function first takes in the path of the and ceates the x (features) and y (labels) values. The label is a 2x1 vector with my images being [0, 1] and my friends images being [1, 0]. My images start with 'S' and the other start with 'V'.</p>
-<p>The network uses the Adam optimizer to optimize the loss function and and compares the predictions with the actual y values to get the accuracy. I also subtract the mean from the train and the test images to centre the images around 0. The network is trained for specified number of epochs and the weights are updated after the specified number of batch_size.</p>
+<p>The train() method is the meat of the whole code. In here the get_images function first takes in the path of the and ceates the x (features) and y (labels) values. Each label is a 2x1 vector with my image being [0, 1] and my friends image being [1, 0]. My images start with 'S' and the other start with 'V'.</p>
+<p>The network uses the Adam optimizer to optimize the loss function and and compares the predictions with the actual y values to get the accuracy. I also subtract the mean from the train and the test images to centre the images. The network is trained for specified number of epochs and the weights are updated after the specified number of batch_size.</p>
 
 </div>
 </div>
@@ -12109,7 +12108,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now comes the interesting part of the project the visualisation of the hidden layers when I feed in my image to the trained network.</p>
-<p>The shape of the test image is [1, 200, 200, 3], to visualise the network first let us see the input images. The below shows the input image <img src="/assets/images/s.jpg" alt="title"></p>
+<p>The shape of the test image is [1, 200, 200, 3], to visualise the network first let us see the input images. The below shows the input image <img src="s.jpg" alt="title"></p>
 
 </div>
 </div>
@@ -14539,7 +14538,7 @@ alhg1BxvDTXUUMMCo+Z4a6ihhhoWGP8fq9oT6aKV1IoAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The second cpnvulutional and pooling layers are less recognizable and learn the finer details of the image.</p>
+<p>The second convulutional and pooling layers are less recognizable and learn the finer details of the image.</p>
 
 </div>
 </div>

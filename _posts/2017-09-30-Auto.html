@@ -11828,7 +11828,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Data preparation i.e. mean centering and normalization</strong></p>
-<p>Taking only cylinders, horsepowerm weight, year and origin as features to predict miles per gallon</p>
+<p>Taking only cylinders, horsepower, weight, year and origin as features to predict miles per gallon</p>
 
 </div>
 </div>
@@ -11991,7 +11991,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Build-a-Flask-WebApp">Build a Flask WebApp<a class="anchor-link" href="#Build-a-Flask-WebApp">&#182;</a></h3><p>The main file of the app.
-The main page shows two text boxes to enter the horsepower and weight values and three dropdowns to select the year, cylinders and origin. After this in the if condition of the index method the predict method of the model file is called which takes in the new data and gives the prediction.</p>
+The main page shows two text boxes to enter the horsepower and weight values and three dropdowns to select the year, cylinders and origin. After this in the if condition of the index method is satisfied then the predict method of the model file is called which takes in the new data and gives the prediction.</p>
 
 </div>
 </div>
@@ -12128,6 +12128,7 @@ The main page shows two text boxes to enter the horsepower and weight values and
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>index.html</strong></p>
+<p>This file shows the code for html, which uses Bootstrap to make things pretty. The value in the html fields come from the page that is displayed to the user and the value in the variable 'total' comes when the model is called by feeding the values to it.</p>
 <p><img src="/assets/images/index.png" alt=""></p>
 
 </div>
@@ -12147,7 +12148,7 @@ The main page shows two text boxes to enter the horsepower and weight values and
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Login to your Heroku account</strong></p>
+<p><strong>Login to your Heroku account using command line</strong></p>
 <p>$ heroku login</p>
 
 </div>
@@ -12177,6 +12178,7 @@ The main page shows two text boxes to enter the horsepower and weight values and
 <p>$ git add .</p>
 <p>$ git commit -m "commit message"</p>
 <p>$ git push heroku master</p>
+<p>After this go to the Dashboard on your Heroku account, where you will see the link that is generated.</p>
 
 </div>
 </div>
